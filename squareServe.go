@@ -13,6 +13,7 @@ const (
 
 func main() {
 	ls, err := net.Listen("tcp", "localhost:4716")
+	log.Println("Server listening @ localhost:4716")
 	if err != nil {
 		log.Fatal(err)
 	}
@@ -27,6 +28,7 @@ func main() {
 }
 
 func handleClient(conn net.Conn) {
+	log.Println("Server handling a new connection")
 	cmdHead := make([]byte, 2)
 	cmdTail := make([]byte, 2)
 	pad := make([]byte, 1)
@@ -40,7 +42,11 @@ func handleClient(conn net.Conn) {
 		switch {
 		case string(cmdHead) == "XX":
 			numberBuf := make([]byte, 0)
-			for conn.Read(pad); pad[0] >= '0' && pad[0] <= '9'; {
+			for {
+				conn.Read(pad)
+				if !(pad[0] >= '0' && pad[0] <= '9') {
+					break
+				}
 				numberBuf = append(numberBuf, pad[0])
 			}
 			cmdTail[0] = pad[0]
@@ -54,6 +60,7 @@ func handleClient(conn net.Conn) {
 			}
 
 			square, err := strconv.ParseInt(string(numberBuf), base, bitSize)
+			square *= square
 			if err != nil {
 				conn.Write([]byte("EE"))
 				conn.Write(numberBuf)
