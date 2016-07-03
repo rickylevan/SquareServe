@@ -10,5 +10,5 @@ client host cannot do multiplication, this server could find its day
 in the sun. :)
 
 I also include tests that demonstrate conformance with the spec. To
-run them, simply enter "go test" after cloning and `cd`ing into the
+run them, simply enter `go test` after cloning and `cd`ing into the
 repository. 
