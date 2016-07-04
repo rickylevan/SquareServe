@@ -44,7 +44,7 @@ func handleClient(conn net.Conn) {
 			numberBuf := make([]byte, 0)
 			for {
 				conn.Read(pad)
-				if !(pad[0] >= '0' && pad[0] <= '9') {
+				if pad[0] == 'X' {
 					break
 				}
 				numberBuf = append(numberBuf, pad[0])
